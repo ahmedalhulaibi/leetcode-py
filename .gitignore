@@ -575,3 +575,6 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,visualstudiocode,intellij+all,node,java,python,go,ssh,terragrunt,terraform
 
 .playwright-mcp
+
+# marimo session state.
+/leetcode/*/__marimo__/

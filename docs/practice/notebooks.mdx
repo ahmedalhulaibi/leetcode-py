@@ -57,6 +57,23 @@ keeps only the `.py` form:
 bake nb-to-py   # all .ipynb under leetcode/ -> py:percent, .ipynb deleted
 ```
 
+## Generate marimo notebooks
+
+Run from the repository root:
+
+```bash
+uv run scripts/gen_marimo.py                       # all problems
+uv run scripts/gen_marimo.py leetcode/two_sum      # one problem
+uv run --with marimo==0.25.2 marimo edit leetcode/two_sum/playground_marimo.py
+```
+
+The script uses [`marimo convert`](https://docs.marimo.io/guides/coming_from/jupyter/#convert-python-scripts-to-marimo-notebooks)
+with pinned marimo and jupytext versions. Each output stays beside its
+`playground.py` source, so imports of `helpers.py` and `solution.py` still work.
+Generated notebooks can be committed to Git and are skipped on later runs to
+preserve your edits. Use `--force` to replace them, or `--jobs N` to set concurrency
+(default: 8). Conversion failures are reported and produce exit status 1.
+
 ## A scratchpad, not the contract
 
 The playground imports the same helpers and solution as the tests, so what
