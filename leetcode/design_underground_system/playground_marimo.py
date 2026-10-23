@@ -1,64 +1,153 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 1396. Design Underground System
+
+    **Medium** · Hash Table, String, Design
+
+    An underground railway system is keeping track of customer travel times between different stations. They are using this data to calculate the average time it takes to travel from one station to another.
+
+    Implement the `UndergroundSystem` class:
+
+    - `UndergroundSystem()` Initializes the object of the underground system.
+    - `void checkIn(int id, string stationName, int t)` A customer with a card ID equal to `id`, checks in at the station `stationName` at time `t`. A customer can only be checked into one place at a time.
+    - `void checkOut(int id, string stationName, int t)` A customer with a card ID equal to `id`, checks out from the station `stationName` at time `t`.
+    - `double getAverageTime(string startStation, string endStation)` Returns the average time it takes to travel from `startStation` to `endStation`. The average time is computed from all the previous traveling times from `startStation` to `endStation` that happened **directly**, meaning a check in at `startStation` followed by a check out from `endStation`. The time it takes to travel from `startStation` to `endStation` **may be different** from the time it takes to travel from `endStation` to `startStation`. There will be at least one customer that has traveled from `startStation` to `endStation` before `getAverageTime` is called.
+
+    You may assume all calls to the `checkIn` and `checkOut` methods are consistent. If a customer checks in at time `t1` then checks out at time `t2`, then `t1 < t2`. All events happen in chronological order.
+
+    ## Examples
+
+    ```
+    Input
+    ["UndergroundSystem","checkIn","checkIn","checkIn","checkOut","checkOut","checkOut","getAverageTime","getAverageTime","checkIn","getAverageTime","checkOut","getAverageTime"]
+    [[],[45,"Leyton",3],[32,"Paradise",8],[27,"Leyton",10],[45,"Waterloo",15],[27,"Waterloo",20],[32,"Cambridge",22],["Paradise","Cambridge"],["Leyton","Waterloo"],[10,"Leyton",24],["Leyton","Waterloo"],[10,"Waterloo",38],["Leyton","Waterloo"]]
+    Output
+    [null,null,null,null,null,null,null,14.00000,11.00000,null,11.00000,null,12.00000]
+    ```
+
+    **Explanation:**
+    ```
+    undergroundSystem.checkIn(45, "Leyton", 3);
+    undergroundSystem.checkIn(32, "Paradise", 8);
+    undergroundSystem.checkIn(27, "Leyton", 10);
+    undergroundSystem.checkOut(45, "Waterloo", 15); // 15-3 = 12
+    undergroundSystem.checkOut(27, "Waterloo", 20); // 20-10 = 10
+    undergroundSystem.checkOut(32, "Cambridge", 22); // 22-8 = 14
+    undergroundSystem.getAverageTime("Paradise", "Cambridge"); // return 14.00000, (14) / 1 = 14
+    undergroundSystem.getAverageTime("Leyton", "Waterloo"); // return 11.00000, (10 + 12) / 2 = 11
+    undergroundSystem.checkIn(10, "Leyton", 24);
+    undergroundSystem.getAverageTime("Leyton", "Waterloo"); // return 11.00000
+    undergroundSystem.checkOut(10, "Waterloo", 38); // 38-24 = 14
+    undergroundSystem.getAverageTime("Leyton", "Waterloo"); // return 12.00000, (10 + 12 + 14) / 3 = 12
+    ```
+
+    ```
+    Input
+    ["UndergroundSystem","checkIn","checkOut","getAverageTime","checkIn","checkOut","getAverageTime","checkIn","checkOut","getAverageTime"]
+    [[],[10,"Leyton",3],[10,"Paradise",8],["Leyton","Paradise"],[5,"Leyton",10],[5,"Paradise",16],["Leyton","Paradise"],[2,"Leyton",21],[2,"Paradise",30],["Leyton","Paradise"]]
+    Output
+    [null,null,null,5.00000,null,null,5.50000,null,null,6.66667]
+    ```
+
+    **Explanation:**
+    ```
+    undergroundSystem.checkIn(10, "Leyton", 3);
+    undergroundSystem.checkOut(10, "Paradise", 8); // 8-3 = 5
+    undergroundSystem.getAverageTime("Leyton", "Paradise"); // return 5.00000, (5) / 1 = 5
+    undergroundSystem.checkIn(5, "Leyton", 10);
+    undergroundSystem.checkOut(5, "Paradise", 16); // 16-10 = 6
+    undergroundSystem.getAverageTime("Leyton", "Paradise"); // return 5.50000, (5 + 6) / 2 = 5.5
+    undergroundSystem.checkIn(2, "Leyton", 21);
+    undergroundSystem.checkOut(2, "Paradise", 30); // 30-21 = 9
+    undergroundSystem.getAverageTime("Leyton", "Paradise"); // return 6.66667, (5 + 6 + 9) / 3 = 6.66667
+    ```
+
+    ## Constraints
+
+    - `1 <= id, t <= 10^6`
+    - `1 <= stationName.length, startStation.length, endStation.length <= 10`
+    - All strings consist of uppercase and lowercase English letters and digits.
+    - There will be at most `2 * 10^4` calls in total to `checkIn`, `checkOut`, and `getAverageTime`.
+    - Answers within `10^-5` of the actual value will be accepted.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_underground_system_operations, run_underground_system_operations
-    from solution import UndergroundSystem
+    class UndergroundSystem:
 
-    return (
-        UndergroundSystem,
-        assert_underground_system_operations,
-        run_underground_system_operations,
-    )
+        def __init__(self) -> None:
+            raise NotImplementedError('Implement __init__')
 
+        def check_in(self, id: int, station_name: str, t: int) -> None:
+            raise NotImplementedError('Implement check_in')
 
-@app.cell
-def _():
-    # Example test case
-    operations = [
-        "UndergroundSystem",
-        "check_in",
-        "check_in",
-        "check_in",
-        "check_out",
-        "check_out",
-        "check_out",
-        "get_average_time",
-    ]
-    inputs = [
-        [],
-        [45, "Leyton", 3],
-        [32, "Paradise", 8],
-        [27, "Leyton", 10],
-        [45, "Waterloo", 15],
-        [27, "Waterloo", 20],
-        [32, "Cambridge", 22],
-        ["Paradise", "Cambridge"],
-    ]
-    expected = [None, None, None, None, None, None, None, 14.0]
-    return expected, inputs, operations
+        def check_out(self, id: int, station_name: str, t: int) -> None:
+            raise NotImplementedError('Implement check_out')
+
+        def get_average_time(self, start_station: str, end_station: str) -> float:
+            raise NotImplementedError('Implement get_average_time')
+
+    practice_exports = {'UndergroundSystem': UndergroundSystem}
+    return (practice_exports,)
 
 
-@app.cell
-def _(
-    UndergroundSystem,
-    inputs,
-    operations,
-    run_underground_system_operations,
-):
-    result, system = run_underground_system_operations(UndergroundSystem, operations, inputs)
-    print(result)
-    system
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_underground_system_operations, expected, result):
-    assert_underground_system_operations(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

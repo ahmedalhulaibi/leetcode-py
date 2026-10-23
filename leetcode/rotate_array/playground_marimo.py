@@ -1,36 +1,108 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 189. Rotate Array
+
+    **Medium** · Array, Math, Two Pointers
+
+    Given an integer array `nums`, rotate the array to the right by `k` steps, where `k` is non-negative.
+
+    ## Examples
+
+    ```
+    Input: nums = [1,2,3,4,5,6,7], k = 3
+    Output: [5,6,7,1,2,3,4]
+    Explanation:
+    rotate 1 steps to the right: [7,1,2,3,4,5,6]
+    rotate 2 steps to the right: [6,7,1,2,3,4,5]
+    rotate 3 steps to the right: [5,6,7,1,2,3,4]
+    ```
+
+    ```
+    Input: nums = [-1,-100,3,99], k = 2
+    Output: [3,99,-1,-100]
+    Explanation:
+    rotate 1 steps to the right: [99,-1,-100,3]
+    rotate 2 steps to the right: [3,99,-1,-100]
+    ```
+
+    ## Constraints
+
+    - 1 <= nums.length <= 10^5
+    - -2^31 <= nums[i] <= 2^31 - 1
+    - 0 <= k <= 10^5
+
+    **Follow up:**
+
+    - Try to come up with as many solutions as you can. There are at least **three** different ways to solve this problem.
+    - Could you do it in-place with `O(1)` extra space?
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_rotate, run_rotate
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_rotate, run_rotate
+        def rotate(self, nums: list[int], k: int) -> None:
+            raise NotImplementedError('Implement rotate')
 
-
-@app.cell
-def _():
-    # Example test case
-    nums = [1, 2, 3, 4, 5, 6, 7]
-    k = 3
-    expected = [5, 6, 7, 1, 2, 3, 4]
-    return expected, k, nums
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, k, nums, run_rotate):
-    result = run_rotate(Solution, nums, k)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_rotate, expected, result):
-    assert_rotate(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

@@ -1,39 +1,102 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 1014. Best Sightseeing Pair
+
+    **Medium** · Array, Dynamic Programming
+
+    You are given an integer array `values` where `values[i]` represents the value of the `ith` sightseeing spot. Two sightseeing spots `i` and `j` have a distance `j - i` between them.
+
+    The score of a pair (`i < j`) of sightseeing spots is `values[i] + values[j] + i - j`: the sum of the values of the sightseeing spots, minus the distance between them.
+
+    Return *the maximum score of a pair of sightseeing spots*.
+
+    ## Examples
+
+    ```
+    Input: values = [8,1,5,2,6]
+    Output: 11
+    Explanation: i = 0, j = 2, values[i] + values[j] + i - j = 8 + 5 + 0 - 2 = 11
+    ```
+
+    ```
+    Input: values = [1,2]
+    Output: 2
+    ```
+
+    ## Constraints
+
+    - `2 <= values.length <= 5 * 10^4`
+    - `1 <= values[i] <= 1000`
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_max_score_sightseeing_pair, run_max_score_sightseeing_pair
-    from solution import Solution
+    class Solution:
 
-    return (
-        Solution,
-        assert_max_score_sightseeing_pair,
-        run_max_score_sightseeing_pair,
-    )
+        def max_score_sightseeing_pair(self, values: list[int]) -> int:
+            raise NotImplementedError('Implement max_score_sightseeing_pair')
 
-
-@app.cell
-def _():
-    # Example test case
-    values = [8, 1, 5, 2, 6]
-    expected = 11
-    return expected, values
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, run_max_score_sightseeing_pair, values):
-    result = run_max_score_sightseeing_pair(Solution, values)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_max_score_sightseeing_pair, expected, result):
-    assert_max_score_sightseeing_pair(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

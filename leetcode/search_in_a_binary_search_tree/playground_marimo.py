@@ -1,36 +1,107 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 700. Search in a Binary Search Tree
+
+    **Easy** · Tree, Binary Search Tree, Binary Tree
+
+    You are given the `root` of a binary search tree (BST) and an integer `val`.
+
+    Find the node in the BST that the node's value equals `val` and return the subtree rooted with that node. If such a node does not exist, return `null`.
+
+    ## Examples
+
+    ![Example 1](https://assets.leetcode.com/uploads/2021/01/12/tree1.jpg)
+
+    ```
+    Input: root = [4,2,7,1,3], val = 2
+    Output: [2,1,3]
+    ```
+
+    ![Example 2](https://assets.leetcode.com/uploads/2021/01/12/tree2.jpg)
+
+    ```
+    Input: root = [4,2,7,1,3], val = 5
+    Output: []
+    ```
+
+    ## Constraints
+
+    - The number of nodes in the tree is in the range [1, 5000].
+    - 1 <= Node.val <= 10^7
+    - root is a binary search tree.
+    - 1 <= val <= 10^7
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_search_bst, run_search_bst
-    from solution import Solution
+    from leetcode_py import TreeNode
 
-    return Solution, assert_search_bst, run_search_bst
+    class Solution:
 
+        def search_bst(self, root: TreeNode[int] | None, val: int) -> TreeNode[int] | None:
+            raise NotImplementedError('Implement search_bst')
 
-@app.cell
-def _():
-    # Example test case
-    root_list: list[int | None] = [4, 2, 7, 1, 3]
-    val = 2
-    expected_list: list[int | None] = [2, 1, 3]
-    return expected_list, root_list, val
+    practice_exports = {'TreeNode': TreeNode, 'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, root_list: list[int | None], run_search_bst, val):
-    result = run_search_bst(Solution, root_list, val)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_search_bst, expected_list: list[int | None], result):
-    assert_search_bst(result, expected_list)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

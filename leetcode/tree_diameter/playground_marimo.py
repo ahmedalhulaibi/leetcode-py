@@ -1,35 +1,109 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 1245. Tree Diameter
+
+    **Medium** · Tree, Depth-First Search, Breadth-First Search, Graph, Topological Sort
+
+    The **diameter** of a tree is **the number of edges** in the longest path in that tree.
+
+    There is an undirected tree of `n` nodes labeled from `0` to `n - 1`. You are given a 2D array `edges` where `edges.length == n - 1` and `edges[i] = [ai, bi]` indicates that there is an undirected edge between nodes `ai` and `bi` in the tree.
+
+    Return **the diameter** of the tree.
+
+    ## Examples
+
+    ![Example 1](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1245.Tree%20Diameter/images/tree1.jpg)
+
+    ```
+    Input: edges = [[0,1],[0,2]]
+    Output: 2
+    ```
+    **Explanation:** The longest path of the tree is the path 1 - 0 - 2.
+
+    ![Example 2](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1245.Tree%20Diameter/images/tree2.jpg)
+
+    ```
+    Input: edges = [[0,1],[1,2],[2,3],[1,4],[4,5]]
+    Output: 4
+    ```
+    **Explanation:** The longest path of the tree is the path 3 - 2 - 1 - 4 - 5.
+
+    ## Constraints
+
+    - `n == edges.length + 1`
+    - `1 <= n <= 10^4`
+    - `0 <= ai, bi < n`
+    - `ai != bi`
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_tree_diameter, run_tree_diameter
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_tree_diameter, run_tree_diameter
+        def tree_diameter(self, edges: list[list[int]]) -> int:
+            raise NotImplementedError('Implement tree_diameter')
 
-
-@app.cell
-def _():
-    # Example test case
-    edges: list[list[int]] = [[0, 1], [0, 2]]
-    expected = 2
-    return edges, expected
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, edges: list[list[int]], run_tree_diameter):
-    result = run_tree_diameter(Solution, edges)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_tree_diameter, expected, result):
-    assert_tree_diameter(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

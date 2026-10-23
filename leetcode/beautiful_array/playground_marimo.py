@@ -1,35 +1,101 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 932. Beautiful Array
+
+    **Medium** · Array, Math, Divide and Conquer
+
+    An array `nums` of length `n` is **beautiful** if:
+
+    - `nums` is a permutation of the integers in the range `[1, n]`.
+    - For every `0 <= i < j < n`, there is no index `k` with `i < k < j` where `2 * nums[k] == nums[i] + nums[j]`.
+
+    Given the integer `n`, return any **beautiful** array `nums` of length `n`. There will be at least one valid answer for the given `n`.
+
+    ## Examples
+
+    ```
+    Input: n = 4
+    Output: [2,1,4,3]
+    ```
+
+    ```
+    Input: n = 5
+    Output: [3,1,2,5,4]
+    ```
+
+    ## Constraints
+
+    - `1 <= n <= 1000`
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_beautiful_array, run_beautiful_array
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_beautiful_array, run_beautiful_array
+        def beautiful_array(self, n: int) -> list[int]:
+            raise NotImplementedError('Implement beautiful_array')
 
-
-@app.cell
-def _():
-    # Example test case
-    n = 4
-    expected = 4
-    return expected, n
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, n, run_beautiful_array):
-    result = run_beautiful_array(Solution, n)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_beautiful_array, expected, result):
-    assert_beautiful_array(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

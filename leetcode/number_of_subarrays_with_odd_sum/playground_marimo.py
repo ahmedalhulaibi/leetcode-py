@@ -1,35 +1,110 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 1524. Number of Sub-arrays With Odd Sum
+
+    **Medium** · Array, Math, Dynamic Programming, Prefix Sum
+
+    <p>Given an array of integers <code>arr</code>, return <em>the number of subarrays with an <strong>odd</strong> sum</em>.</p>
+
+    <p>Since the answer can be very large, return it modulo <code>10<sup>9</sup> + 7</code>.</p>
+
+    ## Examples
+
+    ```
+    Input: arr = [1,3,5]
+    Output: 4
+    Explanation: All subarrays are [[1],[1,3],[1,3,5],[3],[3,5],[5]]
+    All sub-arrays sum are [1,4,9,3,8,5].
+    Odd sums are [1,9,3,5] so the answer is 4.
+    ```
+
+    ```
+    Input: arr = [2,4,6]
+    Output: 0
+    Explanation: All subarrays are [[2],[2,4],[2,4,6],[4],[4,6],[6]]
+    All sub-arrays sum are [2,6,12,4,10,6].
+    All sub-arrays have even sum and the answer is 0.
+    ```
+
+    ```
+    Input: arr = [1,2,3,4,5,6,7]
+    Output: 16
+    ```
+
+    ## Constraints
+
+    - 1 &lt;= arr.length &lt;= 10^5
+    - 1 &lt;= arr[i] &lt;= 100
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_num_of_subarrays, run_num_of_subarrays
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_num_of_subarrays, run_num_of_subarrays
+        def num_of_subarrays(self, arr: list[int]) -> int:
+            raise NotImplementedError('Implement num_of_subarrays')
 
-
-@app.cell
-def _():
-    # Example test case
-    arr = [1, 3, 5]
-    expected = 4
-    return arr, expected
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, arr, run_num_of_subarrays):
-    result = run_num_of_subarrays(Solution, arr)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_num_of_subarrays, expected, result):
-    assert_num_of_subarrays(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

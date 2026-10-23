@@ -1,37 +1,110 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 127. Word Ladder
+
+    **Hard** · Hash Table, String, Breadth-First Search
+
+    A **transformation sequence** from word `beginWord` to word `endWord` using a dictionary `wordList` is a sequence of words `beginWord -> s1 -> s2 -> ... -> sk` such that:
+
+    - Every adjacent pair of words differs by a single letter.
+    - Every `si` for `1 <= i <= k` is in `wordList`. Note that `beginWord` does not need to be in `wordList`.
+    - `sk == endWord`
+
+    Given two words, `beginWord` and `endWord`, and a dictionary `wordList`, return the **number of words** in the **shortest transformation sequence** from `beginWord` to `endWord`, or `0` if no such sequence exists.
+
+    ## Examples
+
+    ```
+    Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
+    Output: 5
+    ```
+    **Explanation:** One shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> "cog", which is 5 words long.
+
+    ```
+    Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
+    Output: 0
+    ```
+    **Explanation:** The endWord "cog" is not in wordList, therefore there is no valid transformation sequence.
+
+    ## Constraints
+
+    - 1 <= beginWord.length <= 10
+    - endWord.length == beginWord.length
+    - 1 <= wordList.length <= 5000
+    - wordList[i].length == beginWord.length
+    - beginWord, endWord, and wordList[i] consist of lowercase English letters.
+    - beginWord != endWord
+    - All the words in wordList are unique.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_ladder_length, run_ladder_length
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_ladder_length, run_ladder_length
+        def ladder_length(self, begin_word: str, end_word: str, word_list: list[str]) -> int:
+            raise NotImplementedError('Implement ladder_length')
 
-
-@app.cell
-def _():
-    # Example test case
-    begin_word = "hit"
-    end_word = "cog"
-    word_list = ["hot", "dot", "dog", "lot", "log", "cog"]
-    expected = 5
-    return begin_word, end_word, expected, word_list
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, begin_word, end_word, run_ladder_length, word_list):
-    result = run_ladder_length(Solution, begin_word, end_word, word_list)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_ladder_length, expected, result):
-    assert_ladder_length(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

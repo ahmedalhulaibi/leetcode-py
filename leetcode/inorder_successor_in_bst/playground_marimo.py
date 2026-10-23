@@ -1,36 +1,104 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 285. Inorder Successor in BST
+
+    **Medium** · Tree, Depth-First Search, Binary Search Tree, Binary Tree
+
+    Given the `root` of a binary search tree and a node `p` in it, return _the in-order successor of that node in the BST_. If the given node has no in-order successor in the tree, return `null`.
+
+    The successor of a node `p` is the node with the smallest key greater than `p.val`.
+
+    ## Examples
+
+    ```
+    Input: root = [2,1,3], p = 1
+    Output: 2
+    Explanation: 1's in-order successor node is 2. Note that both p and the return value are of TreeNode type.
+    ```
+
+    ```
+    Input: root = [5,3,6,2,4,null,null,1], p = 6
+    Output: null
+    Explanation: There is no in-order successor of the current node, so the answer is null.
+    ```
+
+    ## Constraints
+
+    - The number of nodes in the tree is in the range `[1, 10^4]`.
+    - `-10^5 <= Node.val <= 10^5`
+    - All Nodes will have unique values.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_inorder_successor, run_inorder_successor
-    from solution import Solution
+    from leetcode_py import TreeNode
 
-    return Solution, assert_inorder_successor, run_inorder_successor
+    class Solution:
 
+        def inorder_successor(self, root: TreeNode[int] | None, p: TreeNode[int]) -> TreeNode[int] | None:
+            raise NotImplementedError('Implement inorder_successor')
 
-@app.cell
-def _():
-    # Example test case
-    root_list: list[int | None] = [2, 1, 3]
-    p_val = 1
-    expected_val = 2
-    return expected_val, p_val, root_list
+    practice_exports = {'TreeNode': TreeNode, 'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, p_val, root_list: list[int | None], run_inorder_successor):
-    result = run_inorder_successor(Solution, root_list, p_val)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_inorder_successor, expected_val, result):
-    assert_inorder_successor(result, expected_val)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

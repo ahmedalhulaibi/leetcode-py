@@ -577,4 +577,5 @@ $RECYCLE.BIN/
 .playwright-mcp
 
 # marimo session state.
+/__marimo__/
 /leetcode/*/__marimo__/

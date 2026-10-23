@@ -1,36 +1,128 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 488. Zuma Game
+
+    **Hard** · String, Dynamic Programming, Stack, Breadth-First Search, Memoization
+
+    You are playing a variation of the game Zuma.
+
+    In this variation of Zuma, there is a **single row** of colored balls on a board, where each ball can be colored red `'R'`, yellow `'Y'`, blue `'B'`, green `'G'`, or white `'W'`. You also have several colored balls in your hand.
+
+    Your goal is to **clear all** of the balls from the board. On each turn:
+
+    - Pick **any** ball from your hand and insert it in between two balls in the row or on either end of the row.
+    - If there is a group of **three or more consecutive balls** of the **same color**, remove the group of balls from the board.
+      - If this removal causes more groups of three or more of the same color to form, then continue removing each group until there are none left.
+    - If there are no more balls on the board, then you win the game.
+    - Repeat this process until you either win or do not have any more balls in your hand.
+
+    Given a string `board`, representing the row of balls on the board, and a string `hand`, representing the balls in your hand, return *the **minimum** number of balls you have to insert to clear all the balls from the board. If you cannot clear all the balls from the board using the balls in your hand, return* `-1`.
+
+    ## Examples
+
+    ```
+    Input: board = "WRRBBW", hand = "RB"
+    Output: -1
+    Explanation: It is impossible to clear all the balls. The best you can do is:
+    - Insert 'R' so the board becomes WRRRBBW. WRRRBBW -> WBBW.
+    - Insert 'B' so the board becomes WBBBW. WBBBW -> WW.
+    There are still balls remaining on the board, and you are out of balls to insert.
+    ```
+
+    ```
+    Input: board = "WWRRBBWW", hand = "WRBRW"
+    Output: 2
+    Explanation: To make the board empty:
+    - Insert 'R' so the board becomes WWRRRBBWW. WWRRRBBWW -> WWBBWW.
+    - Insert 'B' so the board becomes WWBBBWW. WWBBBWW -> WWWW -> empty.
+    2 balls from your hand were needed to clear the board.
+    ```
+
+    ```
+    Input: board = "G", hand = "GGGGG"
+    Output: 2
+    Explanation: To make the board empty:
+    - Insert 'G' so the board becomes GG.
+    - Insert 'G' so the board becomes GGG. GGG -> empty.
+    2 balls from your hand were needed to clear the board.
+    ```
+
+    ## Constraints
+
+    - 1 <= board.length <= 16
+    - 1 <= hand.length <= 5
+    - board and hand consist of the characters 'R', 'Y', 'B', 'G', and 'W'.
+    - The initial row of balls on the board will not have any groups of three or more consecutive balls of the same color.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_find_min_step, run_find_min_step
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_find_min_step, run_find_min_step
+        def find_min_step(self, board: str, hand: str) -> int:
+            raise NotImplementedError('Implement find_min_step')
 
-
-@app.cell
-def _():
-    # Example test case
-    board = "WWRRBBWW"
-    hand = "WRBRW"
-    expected = 2
-    return board, expected, hand
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, board, hand, run_find_min_step):
-    result = run_find_min_step(Solution, board, hand)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_find_min_step, expected, result):
-    assert_find_min_step(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

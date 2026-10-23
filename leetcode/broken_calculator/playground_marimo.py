@@ -1,36 +1,109 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 991. Broken Calculator
+
+    **Medium** · Math, Greedy
+
+    There is a broken calculator that has the integer `startValue` on its display initially. In one operation, you can:
+
+    - multiply the number on display by `2`, or
+    - subtract `1` from the number on display.
+
+    Given two integers `startValue` and `target`, return the minimum number of operations needed to display `target` on the calculator.
+
+    ## Examples
+
+    ```
+    Input: startValue = 2, target = 3
+    Output: 2
+    Explanation: Use double operation and then decrement operation {2 -> 4 -> 3}.
+    ```
+
+    ```
+    Input: startValue = 5, target = 8
+    Output: 2
+    Explanation: Use decrement and then double {5 -> 4 -> 8}.
+    ```
+
+    ```
+    Input: startValue = 3, target = 10
+    Output: 3
+    Explanation: Use double, decrement and double {3 -> 6 -> 5 -> 10}.
+    ```
+
+    ## Constraints
+
+    - 1 <= startValue, target <= 10^9
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_broken_calc, run_broken_calc
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_broken_calc, run_broken_calc
+        def broken_calc(self, start_value: int, target: int) -> int:
+            raise NotImplementedError('Implement broken_calc')
 
-
-@app.cell
-def _():
-    # Example test case
-    start_value = 2
-    target = 3
-    expected = 2
-    return expected, start_value, target
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, run_broken_calc, start_value, target):
-    result = run_broken_calc(Solution, start_value, target)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_broken_calc, expected, result):
-    assert_broken_calc(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

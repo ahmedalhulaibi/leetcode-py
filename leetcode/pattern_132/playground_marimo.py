@@ -1,35 +1,108 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 456. 132 Pattern
+
+    **Medium** · Array, Binary Search, Stack, Monotonic Stack, Ordered Set
+
+    Given an array of `n` integers `nums`, a **132 pattern** is a subsequence of three integers `nums[i]`, `nums[j]` and `nums[k]` such that `i < j < k` and `nums[i] < nums[k] < nums[j]`.
+
+    Return `true` *if there is a **132 pattern** in* `nums`, otherwise, return `false`.
+
+    ## Examples
+
+    ```
+    Input: nums = [1,2,3,4]
+    Output: false
+    Explanation: There is no 132 pattern in the sequence.
+    ```
+
+    ```
+    Input: nums = [3,1,4,2]
+    Output: true
+    Explanation: There is a 132 pattern in the sequence: [1, 4, 2].
+    ```
+
+    ```
+    Input: nums = [-1,3,2,0]
+    Output: true
+    Explanation: There are three 132 patterns in the sequence: [-1, 3, 2], [-1, 3, 0] and [-1, 2, 0].
+    ```
+
+    ## Constraints
+
+    - `n == nums.length`
+    - `1 <= n <= 2 * 10^5`
+    - `-10^9 <= nums[i] <= 10^9`
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_find_132pattern, run_find_132pattern
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_find_132pattern, run_find_132pattern
+        def find_132pattern(self, nums: list[int]) -> bool:
+            raise NotImplementedError('Implement find_132pattern')
 
-
-@app.cell
-def _():
-    # Example test case
-    nums = [3, 1, 4, 2]
-    expected = True
-    return expected, nums
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, nums, run_find_132pattern):
-    result = run_find_132pattern(Solution, nums)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_find_132pattern, expected, result):
-    assert_find_132pattern(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

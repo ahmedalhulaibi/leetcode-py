@@ -1,43 +1,117 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 2096. Step-By-Step Directions From a Binary Tree Node to Another
+
+    **Medium** · String, Tree, Depth-First Search, Binary Tree, Binary Lifting, Lowest Common Ancestor
+
+    You are given the `root` of a binary tree with `n` nodes. Each node is uniquely assigned a value from `1` to `n`. You are also given an integer `startValue` representing the value of the start node `s`, and a different integer `destValue` representing the value of the destination node `t`.
+
+    Find the shortest path starting from node `s` and ending at node `t`. Generate step-by-step directions of such path as a string consisting of only the uppercase letters `'L'`, `'R'`, and `'U'`. Each letter indicates a specific direction:
+
+    - `'L'` means to go from a node to its **left child** node.
+    - `'R'` means to go from a node to its **right child** node.
+    - `'U'` means to go from a node to its **parent** node.
+
+    Return the step-by-step directions of the shortest path from node `s` to node `t`.
+
+    ## Examples
+
+    ![Example 1](https://assets.leetcode.com/uploads/2021/11/15/eg1.png)
+
+    ```
+    Input: root = [5,1,2,3,null,6,4], startValue = 3, destValue = 6
+    Output: "UURL"
+    Explanation: The shortest path is: 3 -> 1 -> 5 -> 2 -> 6.
+    ```
+
+    ![Example 2](https://assets.leetcode.com/uploads/2021/11/15/eg2.png)
+
+    ```
+    Input: root = [2,1], startValue = 2, destValue = 1
+    Output: "L"
+    Explanation: The shortest path is: 2 -> 1.
+    ```
+
+    ## Constraints
+
+    - The number of nodes in the tree is n
+    - 2 <= n <= 10^5
+    - 1 <= Node.val <= n
+    - All the values in the tree are unique
+    - 1 <= startValue, destValue <= n
+    - startValue != destValue
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_get_directions, run_get_directions
-    from solution import Solution
+    from leetcode_py import TreeNode
 
-    return Solution, assert_get_directions, run_get_directions
+    class Solution:
 
+        def get_directions(self, root: TreeNode[int] | None, start_value: int, dest_value: int) -> str:
+            raise NotImplementedError('Implement get_directions')
 
-@app.cell
-def _():
-    # Example test case
-    root_list: list[int | None] = [5, 1, 2, 3, None, 6, 4]
-    start_value = 3
-    dest_value = 6
-    expected = "UURL"
-    return dest_value, expected, root_list, start_value
+    practice_exports = {'TreeNode': TreeNode, 'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(
-    Solution,
-    dest_value,
-    root_list: list[int | None],
-    run_get_directions,
-    start_value,
-):
-    result = run_get_directions(Solution, root_list, start_value, dest_value)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_get_directions, expected, result):
-    assert_get_directions(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

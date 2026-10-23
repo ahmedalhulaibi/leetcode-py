@@ -1,35 +1,115 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 1088. Confusing Number II
+
+    **Hard** · Math, Backtracking, Depth-First Search
+
+    A **confusing number** is a number that when rotated `180` degrees becomes a **different** number with each digit valid.
+
+    We can rotate digits of a number by `180` degrees to form new digits.
+
+    - When `0, 1, 6, 8,` and `9` are rotated `180` degrees, they become `0, 1, 9, 8,` and `6` respectively.
+    - When `2, 3, 4, 5,` and `7` are rotated `180` degrees, they become **invalid**.
+
+    Note that after rotating a number, we can ignore leading zeros.
+
+    - For example, after rotating `8000`, we have `0008` which is considered as just `8`.
+
+    Given an integer `n`, return *the number of **confusing numbers** in the inclusive range* `[1, n]`.
+
+    ## Examples
+
+    ```
+    Input: n = 20
+    Output: 6
+    Explanation: The confusing numbers are [6,9,10,16,18,19].
+    6 converts to 9.
+    9 converts to 6.
+    10 converts to 01 which is just 1.
+    16 converts to 91.
+    18 converts to 81.
+    19 converts to 61.
+    ```
+
+    ```
+    Input: n = 100
+    Output: 19
+    Explanation: The confusing numbers are [6,9,10,16,18,19,60,61,66,68,80,81,86,89,90,91,98,99,100].
+    ```
+
+    ## Constraints
+
+    - 1 <= n <= 10^9
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_confusing_number_ii, run_confusing_number_ii
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_confusing_number_ii, run_confusing_number_ii
+        def confusing_number_ii(self, n: int) -> int:
+            raise NotImplementedError('Implement confusing_number_ii')
 
-
-@app.cell
-def _():
-    # Example test case
-    n = 20
-    expected = 6
-    return expected, n
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, n, run_confusing_number_ii):
-    result = run_confusing_number_ii(Solution, n)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_confusing_number_ii, expected, result):
-    assert_confusing_number_ii(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

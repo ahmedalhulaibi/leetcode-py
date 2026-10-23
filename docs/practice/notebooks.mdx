@@ -64,18 +64,44 @@ Run from the repository root:
 ```bash
 uv run scripts/gen_marimo.py                       # all problems
 uv run scripts/gen_marimo.py leetcode/two_sum      # one problem
-uv run --with marimo==0.25.2 marimo edit leetcode/two_sum/playground_marimo.py
+uv run --with marimo==0.25.2 marimo edit --sandbox --headless leetcode/two_sum/playground_marimo.py
 ```
 
-The script uses [`marimo convert`](https://docs.marimo.io/guides/coming_from/jupyter/#convert-python-scripts-to-marimo-notebooks)
-with pinned marimo and jupytext versions. Each output stays beside its
-`playground.py` source, so imports of `helpers.py` and `solution.py` still work.
+The script builds an unfinished exercise from the problem's JSON template,
+then uses Jupytext and [`marimo convert`](https://docs.marimo.io/guides/coming_from/jupyter/#convert-python-scripts-to-marimo-notebooks)
+to write `playground_marimo.py`. Each notebook includes the statement, examples,
+constraints, unfinished solution methods, a **Run tests** button, and notes.
+Inline metadata installs the local SDK with its practice dependencies.
 Generated notebooks can be committed to Git and are skipped on later runs to
 preserve your edits. Use `--force` to replace them, or `--jobs N` to set concurrency
 (default: 8). Conversion failures are reported and produce exit status 1.
 
+## Start the local server
+
+```bash
+cd "$HOME/workspace/va/leetcode-py"
+bash scripts/start_marimo.sh
+```
+
+The launcher starts headless from this repository and serves only its notebooks
+at <http://127.0.0.1:2718>. It does not open a browser. Each notebook runs in a
+sandbox with its own dependencies.
+Open the [NeetCode index](http://127.0.0.1:2718/?file=neetcode.py) for NeetCode 150,
+250, or All. Search the table, select a row to read the statement, then use
+**Open notebook** to start the problem playground in a new tab.
+
+Implement the **Your solution** cell in the notebook, then press **Run tests**.
+The runner executes the full `test_solution.py` bank in a separate process
+against your current notebook implementation. It does not import the adjacent
+reference `solution.py` or replace source files. Add Markdown cells for notes.
+
+Running `pytest` directly on the original problem folder checks the supplied
+reference solution; use the notebook button to check your notebook code.
+
+Stop the server with Ctrl+C, then confirm the exit prompt.
+
 ## A scratchpad, not the contract
 
-The playground imports the same helpers and solution as the tests, so what
-you probe here matches what the suite runs. Nothing in it is graded;
-[test_solution.py](/practice/testing) stays the contract.
+The original Jupytext `playground.py` imports the supplied reference solution.
+The marimo `playground_marimo.py` uses your unfinished implementation instead.
+Both use the same [test_solution.py](/practice/testing) contract.

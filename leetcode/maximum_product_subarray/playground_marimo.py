@@ -1,35 +1,102 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 152. Maximum Product Subarray
+
+    **Medium** · Array, Dynamic Programming
+
+    Given an integer array `nums`, find a subarray that has the largest product, and return the product.
+
+    The test cases are generated so that the answer will fit in a **32-bit** integer.
+
+    ## Examples
+
+    ```
+    Input: nums = [2,3,-2,4]
+    Output: 6
+    Explanation: [2,3] has the largest product 6.
+    ```
+
+    ```
+    Input: nums = [-2,0,-1]
+    Output: 0
+    Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+    ```
+
+    ## Constraints
+
+    - `1 <= nums.length <= 2 * 10^4`
+    - `-10 <= nums[i] <= 10`
+    - The product of any subarray of `nums` is **guaranteed** to fit in a **32-bit** integer.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_max_product, run_max_product
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_max_product, run_max_product
+        def max_product(self, nums: list[int]) -> int:
+            raise NotImplementedError('Implement max_product')
 
-
-@app.cell
-def _():
-    # Example test case
-    nums = [2, 3, -2, 4]
-    expected = 6
-    return expected, nums
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, nums, run_max_product):
-    result = run_max_product(Solution, nums)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_max_product, expected, result):
-    assert_max_product(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

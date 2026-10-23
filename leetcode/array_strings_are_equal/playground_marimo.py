@@ -1,40 +1,110 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 1662. Check If Two String Arrays are Equivalent
+
+    **Easy** · Array, String
+
+    Given two string arrays `word1` and `word2`, return `true` if the two arrays represent the same string, and `false` otherwise.
+
+    A string is represented by an array if the array elements concatenated in order forms the string.
+
+    ## Examples
+
+    ```
+    Input: word1 = ["ab", "c"], word2 = ["a", "bc"]
+    Output: true
+    Explanation:
+    word1 represents string "ab" + "c" -> "abc"
+    word2 represents string "a" + "bc" -> "abc"
+    The strings are the same, so return true.
+    ```
+
+    ```
+    Input: word1 = ["a", "cb"], word2 = ["ab", "c"]
+    Output: false
+    ```
+
+    ```
+    Input: word1  = ["abc", "d", "defg"], word2 = ["abcddefg"]
+    Output: true
+    ```
+
+    ## Constraints
+
+    - 1 <= word1.length, word2.length <= 10^3
+    - 1 <= word1[i].length, word2[i].length <= 10^3
+    - 1 <= sum(word1[i].length), sum(word2[i].length) <= 10^3
+    - word1[i] and word2[i] consist of lowercase letters.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_array_strings_are_equal, run_array_strings_are_equal
-    from solution import Solution
+    class Solution:
 
-    return (
-        Solution,
-        assert_array_strings_are_equal,
-        run_array_strings_are_equal,
-    )
+        def array_strings_are_equal(self, word1: list[str], word2: list[str]) -> bool:
+            raise NotImplementedError('Implement array_strings_are_equal')
 
-
-@app.cell
-def _():
-    # Example test case
-    word1 = ["ab", "c"]
-    word2 = ["a", "bc"]
-    expected = True
-    return expected, word1, word2
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, run_array_strings_are_equal, word1, word2):
-    result = run_array_strings_are_equal(Solution, word1, word2)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_array_strings_are_equal, expected, result):
-    assert_array_strings_are_equal(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

@@ -1,35 +1,117 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 1544. Make The String Great
+
+    **Easy** · String, Stack
+
+    Given a string `s` of lower and upper case English letters.
+
+    A good string is a string which doesn't have **two adjacent characters** `s[i]` and `s[i + 1]` where:
+
+    - `0 <= i <= s.length - 2`
+    - `s[i]` is a lower-case letter and `s[i + 1]` is the same letter but in upper-case or **vice-versa**.
+
+    To make the string good, you can choose **two adjacent** characters that make the string bad and remove them. You can keep doing this until the string becomes good.
+
+    Return *the string* after making it good. The answer is guaranteed to be unique under the given constraints.
+
+    **Notice** that an empty string is also good.
+
+    ## Examples
+
+    ```
+    Input: s = "leEeetcode"
+    Output: "leetcode"
+    ```
+    **Explanation:** In the first step, either you choose i = 1 or i = 2, both will result "leEeetcode" to be reduced to "leetcode".
+
+    ```
+    Input: s = "abBAcC"
+    Output: "\"
+    ```
+    **Explanation:** We have many possible scenarios, and all lead to the same answer. For example:
+    "abBAcC" --> "aAcC" --> "cC" --> "\"
+    "abBAcC" --> "abBA" --> "aA" --> "\"
+
+    ```
+    Input: s = "s"
+    Output: "s"
+    ```
+
+    ## Constraints
+
+    - `1 <= s.length <= 100`
+    - `s` contains only lower and upper case English letters.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_make_good, run_make_good
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_make_good, run_make_good
+        def make_good(self, s: str) -> str:
+            raise NotImplementedError('Implement make_good')
 
-
-@app.cell
-def _():
-    # Example test case
-    s = "leEeetcode"
-    expected = "leetcode"
-    return expected, s
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, run_make_good, s):
-    result = run_make_good(Solution, s)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_make_good, expected, result):
-    assert_make_good(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

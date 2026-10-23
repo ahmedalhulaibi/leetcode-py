@@ -1,35 +1,99 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 179. Largest Number
+
+    **Medium** · Array, String, Greedy, Sorting
+
+    Given a list of non-negative integers `nums`, arrange them such that they form the largest number and return it.
+
+    Since the result may be very large, you need to return a string instead of an integer.
+
+    ## Examples
+
+    ```
+    Input: nums = [10,2]
+    Output: "210"
+    ```
+
+    ```
+    Input: nums = [3,30,34,5,9]
+    Output: "9534330"
+    ```
+
+    ## Constraints
+
+    - 1 <= nums.length <= 100
+    - 0 <= nums[i] <= 10^9
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_largest_number, run_largest_number
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_largest_number, run_largest_number
+        def largest_number(self, nums: list[int]) -> str:
+            raise NotImplementedError('Implement largest_number')
 
-
-@app.cell
-def _():
-    # Example test case
-    nums = [3, 30, 34, 5, 9]
-    expected = "9534330"
-    return expected, nums
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, nums, run_largest_number):
-    result = run_largest_number(Solution, nums)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_largest_number, expected, result):
-    assert_largest_number(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

@@ -1,35 +1,116 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 2938. Separate Black and White Balls
+
+    **Medium** · Two Pointers, String, Greedy
+
+    There are `n` balls on a table, each ball has a color black or white.
+
+    You are given a 0-indexed binary string `s` of length `n`, where `1` and `0` represent black and white balls, respectively.
+
+    In each step, you can choose two adjacent balls and swap them.
+
+    Return *the minimum number of steps to group all the black balls to the right and all the white balls to the left*.
+
+    ## Examples
+
+    ```
+    Input: s = "101"
+    Output: 1
+    Explanation: We can group all the black balls to the right in the following way:
+    - Swap s[0] and s[1], s = "011".
+    Initially, 1s are not grouped together, requiring at least 1 step to group them to the right.
+    ```
+
+    ```
+    Input: s = "100"
+    Output: 2
+    Explanation: We can group all the black balls to the right in the following way:
+    - Swap s[0] and s[1], s = "010".
+    - Swap s[1] and s[2], s = "001".
+    It can be proven that the minimum number of steps needed is 2.
+    ```
+
+    ```
+    Input: s = "0111"
+    Output: 0
+    Explanation: All the black balls are already grouped to the right.
+    ```
+
+    ## Constraints
+
+    - 1 <= n == s.length <= 10^5
+    - s[i] is either '0' or '1'.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_minimum_steps, run_minimum_steps
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_minimum_steps, run_minimum_steps
+        def minimum_steps(self, s: str) -> int:
+            raise NotImplementedError('Implement minimum_steps')
 
-
-@app.cell
-def _():
-    # Example test case
-    s = "101"
-    expected = 1
-    return expected, s
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, run_minimum_steps, s):
-    result = run_minimum_steps(Solution, s)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_minimum_steps, expected, result):
-    assert_minimum_steps(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

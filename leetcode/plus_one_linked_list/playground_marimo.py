@@ -1,35 +1,102 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 369. Plus One Linked List
+
+    **Medium** · Linked List, Math
+
+    Given a non-negative integer represented as a linked list of digits, *plus one to the integer*.
+
+    The digits are stored such that the most significant digit is at the `head` of the list.
+
+    ## Examples
+
+    ```
+    Input: head = [1,2,3]
+    Output: [1,2,4]
+    ```
+
+    ```
+    Input: head = [0]
+    Output: [1]
+    ```
+
+    ## Constraints
+
+    - The number of nodes in the linked list is in the range `[1, 100]`.
+    - `0 <= Node.val <= 9`
+    - The number represented by the linked list does not contain leading zeros except for the zero itself.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_plus_one, run_plus_one
-    from solution import Solution
+    from leetcode_py import ListNode
 
-    return Solution, assert_plus_one, run_plus_one
+    class Solution:
 
+        def plus_one(self, head: ListNode[int] | None) -> ListNode[int] | None:
+            raise NotImplementedError('Implement plus_one')
 
-@app.cell
-def _():
-    # Example test case
-    head_vals = [1, 2, 3]
-    expected_vals = [1, 2, 4]
-    return expected_vals, head_vals
+    practice_exports = {'ListNode': ListNode, 'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, head_vals, run_plus_one):
-    result = run_plus_one(Solution, head_vals)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_plus_one, expected_vals, result):
-    assert_plus_one(result, expected_vals)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

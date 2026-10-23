@@ -1,35 +1,107 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 768. Max Chunks To Make Sorted II
+
+    **Hard** · Array, Stack, Greedy, Sorting, Monotonic Stack
+
+    You are given an integer array `arr`.
+
+    We split `arr` into some number of `chunks` (i.e., partitions), and individually sort each chunk. After concatenating them, the result should equal the sorted array.
+
+    Return *the largest number of chunks we can make to sort the array*.
+
+    ## Examples
+
+    ```
+    Input: arr = [5,4,3,2,1]
+    Output: 1
+    Explanation:
+    Splitting into two or more chunks will not return the required result.
+    For example, splitting into [5, 4], [3, 2, 1] will result in [4, 5, 1, 2, 3], which isn't sorted.
+    ```
+
+    ```
+    Input: arr = [2,1,3,4,4]
+    Output: 4
+    Explanation:
+    We can split into two chunks, such as [2, 1], [3, 4, 4].
+    However, splitting into [2, 1], [3], [4], [4] is the highest number of chunks possible.
+    ```
+
+    ## Constraints
+
+    - 1 <= arr.length <= 2000
+    - 0 <= arr[i] <= 10^8
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_max_chunks_to_sorted, run_max_chunks_to_sorted
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_max_chunks_to_sorted, run_max_chunks_to_sorted
+        def max_chunks_to_sorted(self, arr: list[int]) -> int:
+            raise NotImplementedError('Implement max_chunks_to_sorted')
 
-
-@app.cell
-def _():
-    # Example test case
-    arr = [2, 1, 3, 4, 4]
-    expected = 4
-    return arr, expected
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, arr, run_max_chunks_to_sorted):
-    result = run_max_chunks_to_sorted(Solution, arr)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_max_chunks_to_sorted, expected, result):
-    assert_max_chunks_to_sorted(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

@@ -1,39 +1,97 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 357. Count Numbers with Unique Digits
+
+    **Medium** · Math, Dynamic Programming, Backtracking
+
+    Given an integer `n`, return the count of all numbers with unique digits, `x`, where `0 <= x < 10^n`.
+
+    ## Examples
+
+    ```
+    Input: n = 2
+    Output: 91
+    ```
+    **Explanation:** The answer should be the total numbers in the range of 0 <= x < 100, excluding 11,22,33,44,55,66,77,88,99.
+
+    ```
+    Input: n = 0
+    Output: 1
+    ```
+
+    ## Constraints
+
+    - 0 <= n <= 8
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_count_numbers_with_unique_digits, run_count_numbers_with_unique_digits
-    from solution import Solution
+    class Solution:
 
-    return (
-        Solution,
-        assert_count_numbers_with_unique_digits,
-        run_count_numbers_with_unique_digits,
-    )
+        def count_numbers_with_unique_digits(self, n: int) -> int:
+            raise NotImplementedError('Implement count_numbers_with_unique_digits')
 
-
-@app.cell
-def _():
-    # Example test case
-    n = 2
-    expected = 91
-    return expected, n
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, n, run_count_numbers_with_unique_digits):
-    result = run_count_numbers_with_unique_digits(Solution, n)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_count_numbers_with_unique_digits, expected, result):
-    assert_count_numbers_with_unique_digits(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

@@ -1,45 +1,107 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 203. Remove Linked List Elements
+
+    **Easy** · Linked List, Recursion
+
+    Given the `head` of a linked list and an integer `val`, remove all the nodes of the linked list that has `Node.val == val`, and return *the new head*.
+
+    ## Examples
+
+    ![Example 1](https://assets.leetcode.com/uploads/2021/03/06/removelinked-list.jpg)
+
+    ```
+    Input: head = [1,2,6,3,4,5,6], val = 6
+    Output: [1,2,3,4,5]
+    ```
+
+    ```
+    Input: head = [], val = 1
+    Output: []
+    ```
+
+    ```
+    Input: head = [7,7,7,7], val = 7
+    Output: []
+    ```
+
+    ## Constraints
+
+    - The number of nodes in the list is in the range [0, 10<sup>4</sup>]
+    - 1 <= Node.val <= 50
+    - 0 <= val <= 50
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_remove_linked_list_elements, run_remove_linked_list_elements
-    from solution import Solution
+    from leetcode_py import ListNode
 
-    return (
-        Solution,
-        assert_remove_linked_list_elements,
-        run_remove_linked_list_elements,
-    )
+    class Solution:
 
+        def remove_linked_list_elements(self, head: ListNode[int] | None, val: int) -> ListNode[int] | None:
+            raise NotImplementedError('Implement remove_linked_list_elements')
 
-@app.cell
-def _():
-    # Example test case
-    head_vals: list[int] = [1, 2, 6, 3, 4, 5, 6]
-    val: int = 6
-    expected_vals: list[int] = [1, 2, 3, 4, 5]
-    return expected_vals, head_vals, val
+    practice_exports = {'ListNode': ListNode, 'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(
-    Solution,
-    head_vals: list[int],
-    run_remove_linked_list_elements,
-    val: int,
-):
-    result = run_remove_linked_list_elements(Solution, head_vals, val)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_remove_linked_list_elements, expected_vals: list[int], result):
-    assert_remove_linked_list_elements(result, expected_vals)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

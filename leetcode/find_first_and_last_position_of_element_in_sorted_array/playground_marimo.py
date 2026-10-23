@@ -1,36 +1,108 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 34. Find First and Last Position of Element in Sorted Array
+
+    **Medium** · Array, Binary Search
+
+    Given an array of integers `nums` sorted in non-decreasing order, find the starting and ending position of a given `target` value.
+
+    If `target` is not found in the array, return `[-1, -1]`.
+
+    You must write an algorithm with `O(log n)` runtime complexity.
+
+    ## Examples
+
+    ```
+    Input: nums = [5,7,7,8,8,10], target = 8
+    Output: [3,4]
+    ```
+
+    ```
+    Input: nums = [5,7,7,8,8,10], target = 6
+    Output: [-1,-1]
+    ```
+
+    ```
+    Input: nums = [], target = 0
+    Output: [-1,-1]
+    ```
+
+    ## Constraints
+
+    - `0 <= nums.length <= 10^5`
+    - `-10^9 <= nums[i] <= 10^9`
+    - `nums` is a non-decreasing array.
+    - `-10^9 <= target <= 10^9`
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_search_range, run_search_range
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_search_range, run_search_range
+        def search_range(self, nums: list[int], target: int) -> list[int]:
+            raise NotImplementedError('Implement search_range')
 
-
-@app.cell
-def _():
-    # Example test case
-    nums: list[int] = [5, 7, 7, 8, 8, 10]
-    target = 8
-    expected = [3, 4]
-    return expected, nums, target
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, nums: list[int], run_search_range, target):
-    result = run_search_range(Solution, nums, target)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_search_range, expected, result):
-    assert_search_range(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

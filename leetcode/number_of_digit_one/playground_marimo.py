@@ -1,35 +1,96 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 233. Number of Digit One
+
+    **Hard** · Math, Dynamic Programming, Recursion
+
+    Given an integer `n`, count *the total number of digit* `1` *appearing in all non-negative integers less than or equal to* `n`.
+
+    ## Examples
+
+    ```
+    Input: n = 13
+    Output: 6
+    ```
+
+    ```
+    Input: n = 0
+    Output: 0
+    ```
+
+    ## Constraints
+
+    - 0 <= n <= 10<sup>9</sup>
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_count_digit_one, run_count_digit_one
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_count_digit_one, run_count_digit_one
+        def count_digit_one(self, n: int) -> int:
+            raise NotImplementedError('Implement count_digit_one')
 
-
-@app.cell
-def _():
-    # Example test case
-    n: int = 13
-    expected: int = 6
-    return expected, n
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, n: int, run_count_digit_one):
-    result = run_count_digit_one(Solution, n)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_count_digit_one, expected: int, result):
-    assert_count_digit_one(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

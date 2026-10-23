@@ -1,37 +1,124 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 3108. Minimum Cost Walk in Weighted Graph
+
+    **Hard** · Array, Bit Manipulation, Union Find, Graph
+
+    There is an undirected weighted graph with `n` vertices labeled from `0` to `n - 1`.
+
+    You are given the integer `n` and an array `edges`, where `edges[i] = [ui, vi, wi]` indicates that there is an edge between vertices `ui` and `vi` with a weight of `wi`.
+
+    A walk on a graph is a sequence of vertices and edges. The walk starts and ends with a vertex, and each edge connects the vertex that comes before it and the vertex that comes after it. It's important to note that a walk may visit the same edge or vertex more than once.
+
+    The **cost** of a walk starting at node `u` and ending at node `v` is defined as the bitwise `AND` of the weights of the edges traversed during the walk. In other words, if the sequence of edge weights encountered during the walk is `w0, w1, w2, ..., wk`, then the cost is calculated as `w0 & w1 & w2 & ... & wk`, where `&` denotes the bitwise `AND` operator.
+
+    You are also given a 2D array `query`, where `query[i] = [si, ti]`. For each query, you need to find the minimum cost of the walk starting at vertex `si` and ending at vertex `ti`. If there exists no such walk, the answer is `-1`.
+
+    Return *the array* `answer`*, where* `answer[i]` *denotes the **minimum** cost of a walk for query* `i`.
+
+    ## Examples
+
+    ![Example 1](https://assets.leetcode.com/uploads/2024/01/31/q4_example1-1.png)
+
+    ```
+    Input: n = 5, edges = [[0,1,7],[1,3,7],[1,2,1]], query = [[0,3],[3,4]]
+    Output: [1,-1]
+    Explanation:
+    To achieve the cost of 1 in the first query, we need to move on the following edges: 0->1 (weight 7), 1->2 (weight 1), 2->1 (weight 1), 1->3 (weight 7).
+    In the second query, there is no walk between nodes 3 and 4, so the answer is -1.
+    ```
+
+    ![Example 2](https://assets.leetcode.com/uploads/2024/01/31/q4_example2e.png)
+
+    ```
+    Input: n = 3, edges = [[0,2,7],[0,1,15],[1,2,6],[1,2,1]], query = [[1,2]]
+    Output: [0]
+    Explanation:
+    To achieve the cost of 0 in the first query, we need to move on the following edges: 1->2 (weight 1), 2->1 (weight 6), 1->2 (weight 1).
+    ```
+
+    ## Constraints
+
+    - 2 <= n <= 10^5
+    - 0 <= edges.length <= 10^5
+    - edges[i].length == 3
+    - 0 <= ui, vi <= n - 1
+    - ui != vi
+    - 0 <= wi <= 10^5
+    - 1 <= query.length <= 10^5
+    - query[i].length == 2
+    - 0 <= si, ti <= n - 1
+    - si != ti
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_minimum_cost, run_minimum_cost
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_minimum_cost, run_minimum_cost
+        def minimum_cost(self, n: int, edges: list[list[int]], query: list[list[int]]) -> list[int]:
+            raise NotImplementedError('Implement minimum_cost')
 
-
-@app.cell
-def _():
-    # Example test case
-    n = 5
-    edges = [[0, 1, 7], [1, 3, 7], [1, 2, 1]]
-    query = [[0, 3], [3, 4]]
-    expected = [1, -1]
-    return edges, expected, n, query
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, edges, n, query, run_minimum_cost):
-    result = run_minimum_cost(Solution, n, edges, query)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_minimum_cost, expected, result):
-    assert_minimum_cost(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

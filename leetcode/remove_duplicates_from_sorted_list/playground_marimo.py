@@ -1,35 +1,104 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 83. Remove Duplicates from Sorted List
+
+    **Easy** · Linked List
+
+    Given the `head` of a sorted linked list, *delete all duplicates such that each element appears only once*. Return the linked list **sorted** as well.
+
+    ## Examples
+
+    ![Example 1](https://assets.leetcode.com/uploads/2021/01/04/list1.jpg)
+
+    ```
+    Input: head = [1,1,2]
+    Output: [1,2]
+    ```
+
+    ![Example 2](https://assets.leetcode.com/uploads/2021/01/04/list2.jpg)
+
+    ```
+    Input: head = [1,1,2,3,3]
+    Output: [1,2,3]
+    ```
+
+    ## Constraints
+
+    - The number of nodes in the list is in the range `[0, 300]`.
+    - `-100 <= Node.val <= 100`
+    - The list is guaranteed to be sorted in ascending order.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_delete_duplicates, run_delete_duplicates
-    from solution import Solution
+    from leetcode_py import ListNode
 
-    return Solution, assert_delete_duplicates, run_delete_duplicates
+    class Solution:
 
+        def delete_duplicates(self, head: ListNode[int] | None) -> ListNode[int] | None:
+            raise NotImplementedError('Implement delete_duplicates')
 
-@app.cell
-def _():
-    # Example test case
-    head_list = [1, 1, 2, 3, 3]
-    expected_list = [1, 2, 3]
-    return expected_list, head_list
+    practice_exports = {'ListNode': ListNode, 'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, head_list, run_delete_duplicates):
-    result = run_delete_duplicates(Solution, head_list)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_delete_duplicates, expected_list, result):
-    assert_delete_duplicates(result, expected_list)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

@@ -1,43 +1,99 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 340. Longest Substring with At Most K Distinct Characters
+
+    **Medium** · Hash Table, String, Sliding Window
+
+    Given a string `s` and an integer `k`, return *the length of the longest* substring *of* `s` *that contains at most* `k` **distinct** characters*.
+
+    ## Examples
+
+    ```
+    Input: s = "eceba", k = 2
+    Output: 3
+    Explanation: The substring is "ece" with length 3.
+    ```
+
+    ```
+    Input: s = "aa", k = 1
+    Output: 2
+    Explanation: The substring is "aa" with length 2.
+    ```
+
+    ## Constraints
+
+    - `1 <= s.length <= 5 * 10^4`
+    - `0 <= k <= 50`
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import (
-        assert_length_of_longest_substring_k_distinct,
-        run_length_of_longest_substring_k_distinct,
-    )
-    from solution import Solution
+    class Solution:
 
-    return (
-        Solution,
-        assert_length_of_longest_substring_k_distinct,
-        run_length_of_longest_substring_k_distinct,
-    )
+        def length_of_longest_substring_k_distinct(self, s: str, k: int) -> int:
+            raise NotImplementedError('Implement length_of_longest_substring_k_distinct')
+
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _():
-    # Example test case
-    s = "eceba"
-    k = 2
-    expected = 3
-    return expected, k, s
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(Solution, k, run_length_of_longest_substring_k_distinct, s):
-    result = run_length_of_longest_substring_k_distinct(Solution, s, k)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
 
 
-@app.cell
-def _(assert_length_of_longest_substring_k_distinct, expected, result):
-    assert_length_of_longest_substring_k_distinct(result, expected)
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

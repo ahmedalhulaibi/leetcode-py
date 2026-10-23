@@ -1,35 +1,115 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 2971. Find Polygon With the Largest Perimeter
+
+    **Medium** · Array, Greedy, Math, Sorting, Prefix Sum
+
+    You are given an array of **positive** integers `nums` of length `n`.
+
+    A **polygon** is a closed plane figure that has at least `3` sides. The **longest side** of a polygon is **smaller** than the sum of its other sides.
+
+    Conversely, if you have `k` (`k >= 3`) **positive** real numbers `a1`, `a2`, `a3`, ..., `ak` where `a1 <= a2 <= a3 <= ... <= ak` and `a1 + a2 + a3 + ... + ak-1 > ak`, then there **always** exists a polygon with `k` sides whose lengths are `a1`, `a2`, `a3`, ..., `ak`.
+
+    The **perimeter** of a polygon is the sum of lengths of its sides.
+
+    Return the **largest** possible **perimeter** of a **polygon** whose sides can be formed from `nums`, or `-1` if it is not possible to create a polygon.
+
+    ## Examples
+
+    ```
+    Input: nums = [5,5,5]
+    Output: 15
+    Explanation: The only possible polygon that can be made from nums has 3 sides: 5, 5, and 5. The perimeter is 5 + 5 + 5 = 15.
+    ```
+
+    ```
+    Input: nums = [1,12,1,2,5,50,3]
+    Output: 12
+    Explanation: The polygon with the largest perimeter which can be made from nums has 5 sides: 1, 1, 2, 3, and 5. The perimeter is 1 + 1 + 2 + 3 + 5 = 12.
+    We cannot have a polygon with either 12 or 50 as the longest side because it is not possible to include 2 or more smaller sides that have a greater sum than either of them.
+    It can be shown that the largest possible perimeter is 12.
+    ```
+
+    ```
+    Input: nums = [5,5,50]
+    Output: -1
+    Explanation: There is no possible way to form a polygon from nums, as a polygon has at least 3 sides and 50 > 5 + 5.
+    ```
+
+    ## Constraints
+
+    - 3 <= n <= 10^5
+    - 1 <= nums[i] <= 10^9
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_largest_perimeter, run_largest_perimeter
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_largest_perimeter, run_largest_perimeter
+        def largest_perimeter(self, nums: list[int]) -> int:
+            raise NotImplementedError('Implement largest_perimeter')
 
-
-@app.cell
-def _():
-    # Example test case
-    nums = [5, 5, 5]
-    expected = 15
-    return expected, nums
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, nums, run_largest_perimeter):
-    result = run_largest_perimeter(Solution, nums)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_largest_perimeter, expected, result):
-    assert_largest_perimeter(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

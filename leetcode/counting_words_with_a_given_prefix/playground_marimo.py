@@ -1,36 +1,104 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 2185. Counting Words With a Given Prefix
+
+    **Easy** · Array, String, String Matching
+
+    You are given an array of strings `words` and a string `pref`.
+
+    Return the number of strings in `words` that contain `pref` as a prefix.
+
+    A prefix of a string `s` is any leading contiguous substring of `s`.
+
+    ## Examples
+
+    ```
+    Input: words = ["pay","attention","practice","attend"], pref = "at"
+    Output: 2
+    Explanation: The 2 strings that contain "at" as a prefix are: "attention" and "attend".
+    ```
+
+    ```
+    Input: words = ["leetcode","win","loops","success"], pref = "code"
+    Output: 0
+    Explanation: There are no strings that contain "code" as a prefix.
+    ```
+
+    ## Constraints
+
+    - 1 <= words.length <= 100
+    - 1 <= words[i].length, pref.length <= 100
+    - words[i] and pref consist of lowercase English letters.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_prefix_count, run_prefix_count
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_prefix_count, run_prefix_count
+        def prefix_count(self, words: list[str], pref: str) -> int:
+            raise NotImplementedError('Implement prefix_count')
 
-
-@app.cell
-def _():
-    # Example test case
-    words = ["pay", "attention", "practice", "attend"]
-    pref = "at"
-    expected = 2
-    return expected, pref, words
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, pref, run_prefix_count, words):
-    result = run_prefix_count(Solution, words, pref)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_prefix_count, expected, result):
-    assert_prefix_count(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

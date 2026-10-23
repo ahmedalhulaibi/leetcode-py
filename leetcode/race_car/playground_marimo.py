@@ -1,35 +1,110 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 818. Race Car
+
+    **Hard** · Dynamic Programming, Heuristic Search, A* Search
+
+    Your car starts at position `0` and speed `+1` on an infinite number line. Your car can go into negative positions. Your car drives automatically according to a sequence of instructions `'A'` (accelerate) and `'R'` (reverse):
+
+    - When you get an instruction `'A'`, your car does the following:
+      - `position += speed`
+      - `speed *= 2`
+    - When you get an instruction `'R'`, your car does the following:
+      - If your speed is positive then `speed = -1`
+      - otherwise `speed = 1`
+      Your position stays the same.
+
+    For example, after commands `'AAR'`, your car goes to positions `0 --> 1 --> 3 --> 3`, and your speed goes to `1 --> 2 --> 4 --> -1`.
+
+    Given a target position `target`, return *the length of the shortest sequence of instructions to get there*.
+
+    ## Examples
+
+    ```
+    Input: target = 3
+    Output: 2
+    ```
+    **Explanation:** The shortest instruction sequence is `'AA'`. Your position goes from `0 --> 1 --> 3`.
+
+    ```
+    Input: target = 6
+    Output: 5
+    ```
+    **Explanation:** The shortest instruction sequence is `'AAARA'`. Your position goes from `0 --> 1 --> 3 --> 7 --> 7 --> 6`.
+
+    ## Constraints
+
+    - 1 <= target <= 10^4
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_racecar, run_racecar
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_racecar, run_racecar
+        def racecar(self, target: int) -> int:
+            raise NotImplementedError('Implement racecar')
 
-
-@app.cell
-def _():
-    # Example test case
-    target = 3
-    expected = 2
-    return expected, target
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, run_racecar, target):
-    result = run_racecar(Solution, target)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_racecar, expected, result):
-    assert_racecar(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

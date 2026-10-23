@@ -1,36 +1,131 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 998. Maximum Binary Tree II
+
+    **Medium** · Tree, Binary Tree
+
+    A maximum tree is a tree where every node has a value greater than any other value in its subtree.
+
+    You are given the `root` of a maximum binary tree and an integer `val`.
+
+    Just as in the [previous problem](https://leetcode.com/problems/maximum-binary-tree/), the given tree was constructed from a list `a` (`root = Construct(a)`) recursively with the following `Construct(a)` routine:
+
+    1. If `a` is empty, return `null`.
+    2. Otherwise, let `a[i]` be the largest element of `a`. Create a root node with the value `a[i]`.
+    3. The left child of `root` will be `Construct([a[0], a[1], ..., a[i - 1]])`.
+    4. The right child of `root` will be `Construct([a[i + 1], a[i + 2], ..., a[a.length - 1]])`.
+    5. Return `root`.
+
+    Note that we were not given `a` directly, only a root node `root = Construct(a)`.
+
+    Suppose `b` is a copy of `a` with the value `val` appended to it. It is guaranteed that `b` has unique values.
+
+    Return `Construct(b)`.
+
+    ## Examples
+
+    ![Example 1](https://assets.leetcode.com/uploads/2021/08/09/maxtree1.JPG)
+
+    ```
+    Input: root = [4,1,3,null,null,2], val = 5
+    Output: [5,4,null,1,3,null,null,2]
+    Explanation: a = [1,4,2,3], b = [1,4,2,3,5]
+    ```
+
+    ![Example 2](https://assets.leetcode.com/uploads/2021/08/09/maxtree21.JPG)
+
+    ```
+    Input: root = [5,2,4,null,1], val = 3
+    Output: [5,2,4,null,1,null,3]
+    Explanation: a = [2,1,5,4], b = [2,1,5,4,3]
+    ```
+
+    ![Example 3](https://assets.leetcode.com/uploads/2021/08/09/maxtree3.JPG)
+
+    ```
+    Input: root = [5,2,3,null,1], val = 4
+    Output: [5,2,4,null,1,3]
+    Explanation: a = [2,1,5,3], b = [2,1,5,3,4]
+    ```
+
+    ## Constraints
+
+    - The number of nodes in the tree is in the range [1, 100].
+    - 1 <= Node.val <= 100
+    - All the values of the tree are unique.
+    - 1 <= val <= 100
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_insert_into_max_tree, run_insert_into_max_tree
-    from solution import Solution
+    from leetcode_py import TreeNode
 
-    return Solution, assert_insert_into_max_tree, run_insert_into_max_tree
+    class Solution:
 
+        def insert_into_max_tree(self, root: TreeNode[int] | None, val: int) -> TreeNode[int] | None:
+            raise NotImplementedError('Implement insert_into_max_tree')
 
-@app.cell
-def _():
-    # Example test case
-    root_list: list[int | None] = [4, 1, 3, None, None, 2]
-    val = 5
-    expected_list: list[int | None] = [5, 4, None, 1, 3, None, None, 2]
-    return expected_list, root_list, val
+    practice_exports = {'TreeNode': TreeNode, 'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, root_list: list[int | None], run_insert_into_max_tree, val):
-    result = run_insert_into_max_tree(Solution, root_list, val)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_insert_into_max_tree, expected_list: list[int | None], result):
-    assert_insert_into_max_tree(result, expected_list)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

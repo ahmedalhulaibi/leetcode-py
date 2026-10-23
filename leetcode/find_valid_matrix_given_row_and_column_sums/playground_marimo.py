@@ -1,36 +1,113 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 1605. Find Valid Matrix Given Row and Column Sums
+
+    **Medium** · Array, Greedy, Matrix, Flow Network
+
+    You are given two arrays `rowSum` and `colSum` of non-negative integers where `rowSum[i]` is the sum of the elements in the `i<sup>th</sup>` row and `colSum[j]` is the sum of the elements of the `j<sup>th</sup>` column of a 2D matrix. In other words, you do not know the elements of the matrix, but you do know the sums of each row and column.
+
+    Find any matrix of **non-negative** integers of size `rowSum.length x colSum.length` that satisfies the `rowSum` and `colSum` requirements.
+
+    Return a 2D array representing **any** matrix that fulfills the requirements. It's guaranteed that **at least one** matrix that fulfills the requirements exists.
+
+    ## Examples
+
+    ```
+    Input: rowSum = [3,8], colSum = [4,7]
+    Output: [[3,0],
+             [1,7]]
+    Explanation:
+    0th row: 3 + 0 = 3 == rowSum[0]
+    1st row: 1 + 7 = 8 == rowSum[1]
+    0th column: 3 + 1 = 4 == colSum[0]
+    1st column: 0 + 7 = 7 == colSum[1]
+    The row and column sums match, and all matrix elements are non-negative.
+    Another possible matrix is: [[1,2],
+                                 [3,5]]
+    ```
+
+    ```
+    Input: rowSum = [5,7,10], colSum = [8,6,8]
+    Output: [[0,5,0],
+             [6,1,0],
+             [2,0,8]]
+    ```
+
+    ## Constraints
+
+    - `1 <= rowSum.length, colSum.length <= 500`
+    - `0 <= rowSum[i], colSum[i] <= 10^8`
+    - `sum(rowSum) == sum(colSum)`
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_restore_matrix, run_restore_matrix
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_restore_matrix, run_restore_matrix
+        def restore_matrix(self, row_sum: list[int], col_sum: list[int]) -> list[list[int]]:
+            raise NotImplementedError('Implement restore_matrix')
 
-
-@app.cell
-def _():
-    # Example test case
-    row_sum = [3, 8]
-    col_sum = [4, 7]
-    expected = [[3, 0], [1, 7]]
-    return col_sum, expected, row_sum
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, col_sum, row_sum, run_restore_matrix):
-    result = run_restore_matrix(Solution, row_sum, col_sum)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_restore_matrix, col_sum, expected, result, row_sum):
-    assert_restore_matrix(result, row_sum, col_sum, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

@@ -1,39 +1,111 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 1072. Flip Columns For Maximum Number of Equal Rows
+
+    **Medium** · Array, Hash Table, Matrix
+
+    You are given an <code>m x n</code> binary matrix <code>matrix</code>.
+
+    You can choose any number of columns in the matrix and flip every cell in that column (i.e., Change the value of the cell from <code>0</code> to <code>1</code> or vice versa).
+
+    Return <em>the maximum number of rows that have all values equal after some number of flips</em>.
+
+    ## Examples
+
+    ```
+    Input: matrix = [[0,1],[1,1]]
+    Output: 1
+    Explanation: After flipping no values, 1 row has all values equal.
+    ```
+
+    ```
+    Input: matrix = [[0,1],[1,0]]
+    Output: 2
+    Explanation: After flipping values in the first column, both rows have equal values.
+    ```
+
+    ```
+    Input: matrix = [[0,0,0],[0,0,1],[1,1,0]]
+    Output: 2
+    Explanation: After flipping values in the first two columns, the last two rows have equal values.
+    ```
+
+    ## Constraints
+
+    - <code>m == matrix.length</code>
+    - <code>n == matrix[i].length</code>
+    - <code>1 &lt;= m, n &lt;= 300</code>
+    - <code>matrix[i][j]</code> is either <code>0</code> or <code>1</code>.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_max_equal_rows_after_flips, run_max_equal_rows_after_flips
-    from solution import Solution
+    class Solution:
 
-    return (
-        Solution,
-        assert_max_equal_rows_after_flips,
-        run_max_equal_rows_after_flips,
-    )
+        def max_equal_rows_after_flips(self, matrix: list[list[int]]) -> int:
+            raise NotImplementedError('Implement max_equal_rows_after_flips')
 
-
-@app.cell
-def _():
-    # Example test case
-    matrix = [[0, 1], [1, 0]]
-    expected = 2
-    return expected, matrix
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, matrix, run_max_equal_rows_after_flips):
-    result = run_max_equal_rows_after_flips(Solution, matrix)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_max_equal_rows_after_flips, expected, result):
-    assert_max_equal_rows_after_flips(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

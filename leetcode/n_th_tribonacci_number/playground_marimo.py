@@ -1,35 +1,104 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 1137. N-th Tribonacci Number
+
+    **Easy** · Math, Dynamic Programming, Memoization
+
+    The Tribonacci sequence Tn is defined as follows:
+
+    T0 = 0, T1 = 1, T2 = 1, and Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0.
+
+    Given `n`, return the value of Tn.
+
+    ## Examples
+
+    ```
+    Input: n = 4
+    Output: 4
+    Explanation:
+    T_3 = 0 + 1 + 1 = 2
+    T_4 = 1 + 1 + 2 = 4
+    ```
+
+    ```
+    Input: n = 25
+    Output: 1389537
+    ```
+
+    ## Constraints
+
+    - `0 <= n <= 37`
+    - The answer is guaranteed to fit within a 32-bit integer, ie. `answer <= 2^31 - 1`.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_tribonacci, run_tribonacci
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_tribonacci, run_tribonacci
+        def tribonacci(self, n: int) -> int:
+            raise NotImplementedError('Implement tribonacci')
 
-
-@app.cell
-def _():
-    # Example test case
-    n = 4
-    expected = 4
-    return expected, n
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, n, run_tribonacci):
-    result = run_tribonacci(Solution, n)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_tribonacci, expected, result):
-    assert_tribonacci(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

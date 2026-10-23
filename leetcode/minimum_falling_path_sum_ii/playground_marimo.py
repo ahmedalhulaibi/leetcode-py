@@ -1,35 +1,108 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 1289. Minimum Falling Path Sum II
+
+    **Hard** · Array, Dynamic Programming, Matrix
+
+    Given an n x n integer matrix grid, return the minimum sum of a falling path with non-zero shifts.
+
+    A falling path with non-zero shifts is a choice of exactly one element from each row of grid such that no two elements chosen in adjacent rows are in the same column.
+
+    ## Examples
+
+    ![Example 1](https://assets.leetcode.com/uploads/2021/08/10/falling-grid.jpg)
+
+    ```
+    Input: grid = [[1,2,3],[4,5,6],[7,8,9]]
+    Output: 13
+    Explanation:
+    The possible falling paths are:
+    [1,5,9], [1,5,7], [1,6,7], [1,6,8],
+    [2,4,8], [2,4,9], [2,6,7], [2,6,8],
+    [3,4,8], [3,4,9], [3,5,7], [3,5,9]
+    The falling path with the smallest sum is [1,5,7], so the answer is 13.
+    ```
+
+    ```
+    Input: grid = [[7]]
+    Output: 7
+    ```
+
+    ## Constraints
+
+    - n == grid.length == grid[i].length
+    - 1 <= n <= 200
+    - -99 <= grid[i][j] <= 99
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_min_falling_path_sum, run_min_falling_path_sum
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_min_falling_path_sum, run_min_falling_path_sum
+        def min_falling_path_sum(self, grid: list[list[int]]) -> int:
+            raise NotImplementedError('Implement min_falling_path_sum')
 
-
-@app.cell
-def _():
-    # Example test case
-    grid = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-    expected = 13
-    return expected, grid
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, grid, run_min_falling_path_sum):
-    result = run_min_falling_path_sum(Solution, grid)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_min_falling_path_sum, expected, result):
-    assert_min_falling_path_sum(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

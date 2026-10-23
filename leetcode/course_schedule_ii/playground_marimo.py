@@ -1,36 +1,113 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 210. Course Schedule II
+
+    **Medium** · Depth-First Search, Breadth-First Search, Graph, Topological Sort
+
+    There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [ai, bi]` indicates that you **must** take course `bi` first if you want to take course `ai`.
+
+    - For example, the pair `[0, 1]`, indicates that to take course `0` you have to first take course `1`.
+
+    Return the ordering of courses you should take to finish all courses. If there are many valid answers, return **any** of them. If it is impossible to finish all courses, return **an empty array**.
+
+    ## Examples
+
+    ```
+    Input: numCourses = 2, prerequisites = [[1,0]]
+    Output: [0,1]
+    Explanation: There are a total of 2 courses to take. To take course 1 you should have finished course 0. So the correct course order is [0,1].
+    ```
+
+    ```
+    Input: numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]
+    Output: [0,2,1,3]
+    Explanation: There are a total of 4 courses to take. To take course 3 you should have finished both courses 1 and 2. Both courses 1 and 2 should be taken after you finished course 0.
+    So one correct course order is [0,1,2,3]. Another correct ordering is [0,2,1,3].
+    ```
+
+    ```
+    Input: numCourses = 1, prerequisites = []
+    Output: [0]
+    ```
+
+    ## Constraints
+
+    - `1 <= numCourses <= 2000`
+    - `0 <= prerequisites.length <= numCourses * (numCourses - 1)`
+    - `prerequisites[i].length == 2`
+    - `0 <= ai, bi < numCourses`
+    - `ai != bi`
+    - All the pairs `[ai, bi]` are **distinct**.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_find_order, run_find_order
-    from solution import Solution
+    class Solution:
 
-    return Solution, assert_find_order, run_find_order
+        def find_order(self, num_courses: int, prerequisites: list[list[int]]) -> list[int]:
+            raise NotImplementedError('Implement find_order')
 
-
-@app.cell
-def _():
-    # Example test case
-    num_courses = 4
-    prerequisites = [[1, 0], [2, 0], [3, 1], [3, 2]]
-    expected = [0, 2, 1, 3]
-    return expected, num_courses, prerequisites
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, num_courses, prerequisites, run_find_order):
-    result = run_find_order(Solution, num_courses, prerequisites)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_find_order, expected, result):
-    assert_find_order(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

@@ -1,35 +1,127 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 2130. Maximum Twin Sum of a Linked List
+
+    **Medium** · Linked List, Two Pointers, Stack
+
+    In a linked list of size `n`, where `n` is **even**, the `i^th` node (**0-indexed**) of the linked list is known as the **twin** of the `(n-1-i)^th` node, if `0 <= i <= (n / 2) - 1`.
+
+    - For example, if `n = 4`, then node `0` is the twin of node `3`, and node `1` is the twin of node `2`. These are the only nodes with twins for `n = 4`.
+
+    The **twin sum** is defined as the sum of a node and its twin.
+
+    Given the `head` of a linked list with even length, return *the **maximum twin sum** of the linked list*.
+
+    ## Examples
+
+    ![Example 1](https://assets.leetcode.com/uploads/2021/12/03/eg1drawio.png)
+
+    ```
+    Input: head = [5,4,2,1]
+    Output: 6
+    Explanation:
+    Nodes 0 and 1 are the twins of nodes 3 and 2, respectively. All have twin sum = 6.
+    There are no other nodes with twins in the linked list.
+    Thus, the maximum twin sum of the linked list is 6.
+    ```
+
+    ![Example 2](https://assets.leetcode.com/uploads/2021/12/03/eg2drawio.png)
+
+    ```
+    Input: head = [4,2,2,3]
+    Output: 7
+    Explanation:
+    The nodes with twins present in this linked list are:
+    - Node 0 is the twin of node 3 having a twin sum of 4 + 3 = 7.
+    - Node 1 is the twin of node 2 having a twin sum of 2 + 2 = 4.
+    Thus, the maximum twin sum of the linked list is max(7, 4) = 7.
+    ```
+
+    ![Example 3](https://assets.leetcode.com/uploads/2021/12/03/eg3drawio.png)
+
+    ```
+    Input: head = [1,100000]
+    Output: 100001
+    Explanation:
+    There is only one node with a twin in the linked list having twin sum of 1 + 100000 = 100001.
+    ```
+
+    ## Constraints
+
+    - The number of nodes in the list is an **even** integer in the range `[2, 10^5]`.
+    - `1 <= Node.val <= 10^5`
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_pair_sum, run_pair_sum
-    from solution import Solution
+    from leetcode_py import ListNode
 
-    return Solution, assert_pair_sum, run_pair_sum
+    class Solution:
 
+        def pair_sum(self, head: ListNode[int] | None) -> int:
+            raise NotImplementedError('Implement pair_sum')
 
-@app.cell
-def _():
-    # Example test case
-    head_list: list[int] = [5, 4, 2, 1]
-    expected = 6
-    return expected, head_list
+    practice_exports = {'ListNode': ListNode, 'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, head_list: list[int], run_pair_sum):
-    result = run_pair_sum(Solution, head_list)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_pair_sum, expected, result):
-    assert_pair_sum(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 

@@ -1,40 +1,113 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["marimo==0.25.2", "leetcode-py-sdk[practice]==0.0.0"]
+# [tool.uv.sources]
+# leetcode-py-sdk = { path = "../..", editable = true }
+# ///
+
 import marimo
 
 __generated_with = "0.25.2"
 app = marimo.App()
 
 
+@app.cell(hide_code=True)
+def _():
+    import marimo as mo
+    from leetcode_py.practice import run_practice_tests
+
+    return mo, run_practice_tests
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    # 2685. Count the Number of Complete Components
+
+    **Medium** · Depth-First Search, Breadth-First Search, Union-Find, Graph Theory
+
+    You are given an integer `n`. There is an **undirected** graph with `n` vertices, numbered from `0` to `n - 1`. You are given a 2D integer array `edges` where `edges[i] = [a<sub>i</sub>, b<sub>i</sub>]` denotes that there exists an **undirected** edge connecting vertices `a<sub>i</sub>` and `b<sub>i</sub>`.
+
+    Return *the number of **complete connected components** of the graph*.
+
+    A **connected component** is a subgraph of a graph in which there exists a path between any two vertices, and no vertex of the subgraph shares an edge with a vertex outside of the subgraph.
+
+    A connected component is said to be **complete** if there exists an edge between every pair of its vertices.
+
+    ## Examples
+
+    ![Example 1](https://assets.leetcode.com/uploads/2023/04/11/screenshot-from-2023-04-11-23-31-23.png)
+
+    ```
+    Input: n = 6, edges = [[0,1],[0,2],[1,2],[3,4]]
+    Output: 3
+    Explanation: From the picture above, one can see that all of the components of this graph are complete.
+    ```
+
+    ![Example 2](https://assets.leetcode.com/uploads/2023/04/11/screenshot-from-2023-04-11-23-32-00.png)
+
+    ```
+    Input: n = 6, edges = [[0,1],[0,2],[1,2],[3,4],[3,5]]
+    Output: 1
+    Explanation: The component containing vertices 0, 1, and 2 is complete since there is an edge between every pair of two vertices. On the other hand, the component containing vertices 3, 4, and 5 is not complete since there is no edge between vertices 4 and 5. Thus, the number of complete components in this graph is 1.
+    ```
+
+    ## Constraints
+
+    - 1 <= n <= 50
+    - 0 <= edges.length <= n * (n - 1) / 2
+    - edges[i].length == 2
+    - 0 <= a<sub>i</sub>, b<sub>i</sub> <= n - 1
+    - a<sub>i</sub> != b<sub>i</sub>
+    - There are no repeated edges.
+
+
+
+    ## Your solution
+
+    Implement the unfinished methods below, then press **Run tests**.
+    """)
+    return
+
+
 @app.cell
 def _():
-    from helpers import assert_count_complete_components, run_count_complete_components
-    from solution import Solution
+    class Solution:
 
-    return (
-        Solution,
-        assert_count_complete_components,
-        run_count_complete_components,
-    )
+        def count_complete_components(self, n: int, edges: list[list[int]]) -> int:
+            raise NotImplementedError('Implement count_complete_components')
 
-
-@app.cell
-def _():
-    # Example test case
-    n = 6
-    edges = [[0, 1], [0, 2], [1, 2], [3, 4]]
-    expected = 3
-    return edges, expected, n
+    practice_exports = {'Solution': Solution}
+    return (practice_exports,)
 
 
-@app.cell
-def _(Solution, edges, n, run_count_complete_components):
-    result = run_count_complete_components(Solution, n, edges)
-    result
-    return (result,)
+@app.cell(hide_code=True)
+def _(mo):
+    run_tests = mo.ui.run_button(label="Run tests")
+    run_tests
+    return (run_tests,)
 
 
-@app.cell
-def _(assert_count_complete_components, expected, result):
-    assert_count_complete_components(result, expected)
+@app.cell(hide_code=True)
+def _(mo, practice_exports, run_practice_tests, run_tests):
+    mo.stop(not run_tests.value, mo.md("Implement your solution, then run the tests."))
+    test_result = run_practice_tests(mo.notebook_dir(), practice_exports)
+    mo.vstack([
+        mo.md(f"**{test_result.passed} passed · {test_result.failed} failed · "
+              f"{test_result.skipped} skipped**"),
+        mo.md("**All tests passed.**" if test_result.exit_code == 0 else "**Tests are not passing yet.**"),
+        mo.accordion({"Test output": mo.plain_text(test_result.output)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Notes
+
+    Record your approach, complexity, and edge cases here.
+    """)
     return
 
 
